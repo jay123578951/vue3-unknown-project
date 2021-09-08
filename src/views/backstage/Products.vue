@@ -1,12 +1,9 @@
 <template>
-  <!-- <ul class="list-group" v-for="product in products" :key="product.id">
-    <li class="list-group-item">{{ product.title }}</li>
-  </ul> -->
   <table class="table mt-4">
     <thead>
       <tr>
-        <th width="120">分類</th>
         <th>產品名稱</th>
+        <th width="120">分類</th>
         <th width="120">原價</th>
         <th width="120">售價</th>
         <th width="100">是否啟用</th>
@@ -15,8 +12,12 @@
     </thead>
     <tbody>
       <tr v-for="product in products" :key="product.id">
-        <td>{{ product.category }}</td>
-        <td>{{ product.title }}</td>
+        <td>
+          <span class="table-title">{{ product.title }}</span>
+        </td>
+        <td>
+          <span class="table-category">{{ product.category }}</span>
+        </td>
         <td class="text-right">
           {{ product.origin_price }}
         </td>
@@ -24,13 +25,17 @@
           {{ product.price }}
         </td>
         <td>
-          <span class="text-success" v-if="product.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span>
+          <span class="text-success" v-if="product.is_enabled">Enable</span>
+          <span class="text-muted" v-else>Not Enabled</span>
         </td>
         <td>
-          <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm">編輯</button>
-            <button class="btn btn-outline-danger btn-sm">刪除</button>
+          <div class="table-btns">
+            <button class="btn me-3">
+              <span class="material-icons table-btns-edit">edit</span>
+            </button>
+            <button class="btn">
+              <span class="material-icons table-btns-delete">delete</span>
+            </button>
           </div>
         </td>
       </tr>
@@ -56,3 +61,38 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.table > :not(caption) > * > * {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+.table-title {
+  font-weight: bold;
+}
+.table-category {
+  opacity: 0.5;
+}
+.table-btns {
+  button {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #fff;
+    transition: $transition-base;
+    &:hover {
+      background: $background;
+      .table-btns-edit {
+        color: $primary;
+      }
+      .table-btns-delete {
+        color: $danger;
+      }
+    }
+    span {
+      display: block;
+      color: $third-hover;
+      transition: $transition-base;
+    }
+  }
+}
+</style>

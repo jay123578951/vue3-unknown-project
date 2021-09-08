@@ -106,7 +106,7 @@ export default {
   .login-type {
     .login-type-divide {
       font-size: 14px;
-      color: $light;
+      color: $third;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -116,7 +116,7 @@ export default {
       .divide-line {
         width: 100px;
         height: 1px;
-        background-color: $light;
+        background-color: $third;
       }
     }
     .login-type-btn {

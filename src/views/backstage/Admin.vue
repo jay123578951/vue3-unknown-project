@@ -1,8 +1,15 @@
 <template>
-  <Navbar v-show="isLogIn" />
-  <div class="container-fluid">
-    <router-view v-show="isLogIn" />
-  </div>
+  <section v-show="isLogIn">
+    <div class="admin">
+      <div class="admin-nav">
+        <Navbar />
+      </div>
+      <div class="admin-cnt">
+        <router-view />
+      </div>
+      <div class="admin-info"></div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -35,3 +42,23 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.admin {
+  display: flex;
+  height: 100vh;
+  .admin-nav {
+    width: auto;
+    background-color: $background;
+    padding: 2rem 1rem;
+  }
+  .admin-cnt {
+    width: 100%;
+    padding: 2rem;
+  }
+  .admin-info {
+    width: 25%;
+    background-color: $background;
+  }
+}
+</style>
