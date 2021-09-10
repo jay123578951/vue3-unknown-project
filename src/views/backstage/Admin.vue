@@ -46,11 +46,11 @@ export default {
 <style lang="scss" scoped>
 .admin {
   display: flex;
-  height: 100vh;
+  // height: 100vh;
   .admin-nav {
     width: auto;
     background-color: $background;
-    padding: 2rem 1rem;
+    padding: 2rem 0.5rem;
   }
   .admin-cnt {
     width: 100%;

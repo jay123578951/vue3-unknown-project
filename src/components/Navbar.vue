@@ -81,7 +81,7 @@ export default {
       color: #fff;
     }
     .nav-link-text {
-      bottom: -12px;
+      bottom: -20px;
       opacity: 1;
     }
   }
@@ -93,14 +93,15 @@ export default {
   justify-content: center;
   align-items: center;
   color: $body-color;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
   &:hover {
     .material-icons {
       background-color: $secondary;
       color: $body-color;
     }
     .nav-link-text {
-      bottom: -12px;
+      bottom: -20px;
       opacity: 1;
     }
   }
@@ -108,12 +109,11 @@ export default {
     background-color: $third-hover;
     border-radius: 0.75rem;
     padding: 1rem;
-    margin-bottom: 4px;
     transition: $transition-base;
   }
   .nav-link-text {
     position: absolute;
-    bottom: -16px;
+    bottom: -28px;
     font-size: 14px;
     opacity: 0;
     transition: $transition-base;
