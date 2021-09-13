@@ -1,4 +1,5 @@
 <template>
+  <Loading :active="isLoading"></Loading>
   <section class="d-flex justify-content-between align-items-center mb-5">
     <h3 class="mb-0">Products</h3>
     <form class="search-btn d-flex">
@@ -55,6 +56,8 @@
         </tr>
       </tbody>
     </table>
+    <Pagination @emit-pages="getProducts"
+      :pages="pagination"></Pagination>
   </section>
   <ProductModal ref="productModal"
     @update-product="updateProduct"
@@ -67,31 +70,39 @@
 <script>
 import ProductModal from '../../components/ProductModal.vue';
 import DelModal from '../../components/DelModal.vue';
+import Pagination from '../../components/Pagination.vue';
 
 export default {
   name: 'Products',
   components: {
     ProductModal,
     DelModal,
+    Pagination,
   },
   data() {
     return {
       products: [],
       is_enabled: 1,
       tempProduct: {},
+      pagination: {},
       isNew: false,
+      isLoading: false,
     };
   },
   created() {
     this.getProducts();
   },
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products`;
+    getProducts(page = 1) {
+      console.log(page);
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`;
+      this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             this.products = res.data.products;
+            this.pagination = res.data.pagination;
           }
         });
     },
