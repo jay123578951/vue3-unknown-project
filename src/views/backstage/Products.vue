@@ -48,7 +48,7 @@
               </button>
               <button class="btn">
                 <span class="material-icons table-btns-delete"
-                  @click="deleteProduct(product)">delete</span>
+                  @click="openDelModal(product)">delete</span>
               </button>
             </div>
           </td>
@@ -59,15 +59,20 @@
   <ProductModal ref="productModal"
     @update-product="updateProduct"
     :product-info="tempProduct"></ProductModal>
+  <DelModal ref="delModal"
+    @del-product="deleteProduct"
+    :del-product-info="tempProduct"></DelModal>
 </template>
 
 <script>
 import ProductModal from '../../components/ProductModal.vue';
+import DelModal from '../../components/DelModal.vue';
 
 export default {
   name: 'Products',
   components: {
     ProductModal,
+    DelModal,
   },
   data() {
     return {
@@ -117,11 +122,16 @@ export default {
           }
         });
     },
+    openDelModal(product) {
+      this.tempProduct = { ...product };
+      this.$refs.delModal.showModal();
+    },
     deleteProduct(product) {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${product.id}`;
       this.$http.delete(api)
         .then((res) => {
-          alert(res.data.message);
+          console.log(res.data.message);
+          this.$refs.delModal.hideModal();
           this.getProducts();
         });
     },
