@@ -9,53 +9,78 @@
       </button>
     </form>
   </section>
+  <section class="d-flex justify-content-between align-items-center mb-5">
+    <div class="product-quantity">
+      <span class="material-icons">receipt_long</span>
+      <div>
+        <p>Product quantity</p>
+        <h3>{{ products.length }}</h3>
+      </div>
+    </div>
+    <div class="product-quantity">
+      <span class="material-icons">receipt_long</span>
+      <div>
+        <p>Product quantity</p>
+        <h3>{{ products.length }}</h3>
+      </div>
+    </div>
+    <div class="product-quantity">
+      <span class="material-icons">receipt_long</span>
+      <div>
+        <p>Product quantity</p>
+        <h3>{{ products.length }}</h3>
+      </div>
+    </div>
+  </section>
   <section class="productsTable">
-    <button type="button" class="btn btn-primary mb-3"
+    <button type="button" class="btn btn-primary add-btn mb-3"
       @click="openModal(true)">Add Product</button>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th width="120">Category</th>
-          <th width="120">Origin price</th>
-          <th width="120">Price</th>
-          <th width="100">Enabled</th>
-          <th width="200">Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="product in products" :key="product.id">
-          <td>
-            <span class="table-title">{{ product.title }}</span>
-          </td>
-          <td>
-            <span class="table-category">{{ product.category }}</span>
-          </td>
-          <td class="text-right">
-            {{ product.origin_price }}
-          </td>
-          <td class="text-right">
-            {{ product.price }}
-          </td>
-          <td>
-            <span class="text-success" v-if="product.is_enabled">Enable</span>
-            <span class="text-muted" v-else>Not Enabled</span>
-          </td>
-          <td>
-            <div class="table-btns">
-              <button class="btn me-3">
-                <span class="material-icons table-btns-edit"
-                  @click="openModal(false, product)">edit</span>
-              </button>
-              <button class="btn">
-                <span class="material-icons table-btns-delete"
-                  @click="openDelModal(product)">delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="productsList">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th width="120">Category</th>
+            <th width="120">Origin price</th>
+            <th width="120">Price</th>
+            <th width="100">Enabled</th>
+            <th width="200">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="product in products" :key="product.id">
+            <td>
+              <span class="table-title">{{ product.title }}</span>
+            </td>
+            <td>
+              <span class="table-category">{{ product.category }}</span>
+            </td>
+            <td class="text-right">
+              {{ product.origin_price }}
+            </td>
+            <td class="text-right">
+              {{ product.price }}
+            </td>
+            <td>
+              <span class="text-success" v-if="product.is_enabled">Enable</span>
+              <span class="text-muted" v-else>Not Enabled</span>
+            </td>
+            <td>
+              <div class="table-btns">
+                <button class="btn me-3">
+                  <span class="material-icons table-btns-edit"
+                    @click="openModal(false, product)">edit</span>
+                </button>
+                <button class="btn">
+                  <span class="material-icons table-btns-delete"
+                    @click="openDelModal(product)">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <Pagination @emit-pages="getProducts"
       :pages="pagination"></Pagination>
   </section>
@@ -68,6 +93,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import ProductModal from '../../components/ProductModal.vue';
 import DelModal from '../../components/DelModal.vue';
 import Pagination from '../../components/Pagination.vue';
@@ -87,14 +113,17 @@ export default {
       pagination: {},
       isNew: false,
       isLoading: false,
+      mag: {},
     };
   },
   created() {
     this.getProducts();
   },
+  computed: {
+    ...mapState(['msg']),
+  },
   methods: {
     getProducts(page = 1) {
-      console.log(page);
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`;
       this.isLoading = true;
       this.$http.get(api)
@@ -130,6 +159,19 @@ export default {
           if (res.data.success) {
             this.getProducts();
             this.$refs.productModal.hideModal();
+            this.$store.commit('setMsg', {
+              icon: 'success',
+              status: 'check',
+              title: 'Update products',
+              content: 'Product update successfully！',
+            });
+          } else {
+            this.$store.commit('setMsg', {
+              icon: 'error',
+              status: 'error_outline',
+              title: 'Update products',
+              content: 'Product update failed！',
+            });
           }
         });
     },
@@ -141,9 +183,23 @@ export default {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${product.id}`;
       this.$http.delete(api)
         .then((res) => {
-          console.log(res.data.message);
-          this.$refs.delModal.hideModal();
-          this.getProducts();
+          if (res.data.success) {
+            this.$refs.delModal.hideModal();
+            this.getProducts();
+            this.$store.commit('setMsg', {
+              icon: 'success',
+              status: 'check',
+              title: 'Delete products',
+              content: 'Product delete successfully！',
+            });
+          } else {
+            this.$store.commit('setMsg', {
+              icon: 'error',
+              status: 'error_outline',
+              title: 'Delete products',
+              content: 'Product delete failed！',
+            });
+          }
         });
     },
   },
@@ -172,35 +228,59 @@ export default {
     vertical-align: middle;
   }
 }
-.table > :not(caption) > * > * {
-  vertical-align: middle;
-  padding: 0.75rem;
-}
-.table-title {
-  font-weight: bold;
-}
-.table-category {
-  opacity: 0.5;
-}
-.table-btns {
-  button {
-    padding: 1rem;
+.product-quantity {
+  display: flex;
+  align-items: center;
+  .material-icons {
+    font-size: 2.75em;
+    background: #bcbcbc;
+    padding: 1.25rem;
     border-radius: 0.75rem;
-    background: #fff;
-    transition: $transition-base;
-    &:hover {
-      background: $background;
-      .table-btns-edit {
-        color: $primary;
-      }
-      .table-btns-delete {
-        color: $danger;
-      }
-    }
-    span {
-      display: block;
-      color: $third-hover;
+    margin-right: 1rem;
+  }
+  p {
+    margin-bottom: 0;
+    opacity: 0.5;
+  }
+  h3 {
+    margin-bottom: 0;
+    font-size: 2.5rem;
+  }
+}
+.productsList {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 2rem;
+  .table > :not(caption) > * > * {
+    vertical-align: middle;
+    padding: 0.75rem;
+  }
+  .table-title {
+    font-weight: bold;
+  }
+  .table-category {
+    opacity: 0.5;
+  }
+  .table-btns {
+    button {
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: #fff;
       transition: $transition-base;
+      &:hover {
+        background: $background;
+        .table-btns-edit {
+          color: $primary;
+        }
+        .table-btns-delete {
+          color: $danger;
+        }
+      }
+      span {
+        display: block;
+        color: $third-hover;
+        transition: $transition-base;
+      }
     }
   }
 }

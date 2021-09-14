@@ -7,18 +7,23 @@
       <div class="admin-cnt">
         <router-view />
       </div>
-      <div class="admin-info"></div>
+      <div class="admin-info">
+        <h5 class="mb-3">Messages</h5>
+        <Toast />
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import Navbar from '../../components/Navbar.vue';
+import Toast from '../../components/Toast.vue';
 
 export default {
-  name: 'DashBoard',
+  name: 'Admin',
   components: {
     Navbar,
+    Toast,
   },
   data() {
     return {
@@ -46,7 +51,7 @@ export default {
 <style lang="scss" scoped>
 .admin {
   display: flex;
-  // height: 100vh;
+  min-height: 100vh;
   .admin-nav {
     width: auto;
     background-color: $background;
@@ -57,7 +62,8 @@ export default {
     padding: 2rem;
   }
   .admin-info {
-    width: 25%;
+    width: 40%;
+    padding: 2rem 1rem;
     background-color: $background;
   }
 }
