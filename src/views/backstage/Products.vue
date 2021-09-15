@@ -1,7 +1,7 @@
 <template>
   <Loading :active="isLoading"></Loading>
   <section class="d-flex justify-content-between align-items-center mb-5">
-    <h3 class="mb-0">Products</h3>
+    <h3 class="mb-0">Products Page</h3>
     <form class="search-btn d-flex">
       <input class="form-control" type="search" placeholder="Search" aria-label="Search">
       <button class="btn" type="submit">
@@ -17,24 +17,40 @@
         <h3>{{ products.length }}</h3>
       </div>
     </div>
-    <div class="product-quantity">
-      <span class="material-icons">receipt_long</span>
+    <div class="product-quantity ms-3 me-3">
+      <span class="material-icons">trending_up</span>
       <div>
         <p>Product quantity</p>
-        <h3>{{ products.length }}</h3>
+        <h3>35%</h3>
       </div>
     </div>
     <div class="product-quantity">
-      <span class="material-icons">receipt_long</span>
+      <span class="material-icons">public</span>
       <div>
         <p>Product quantity</p>
-        <h3>{{ products.length }}</h3>
+        <h3>714</h3>
       </div>
     </div>
   </section>
+  <section>
+    <h5 class="mb-3">Type ratio</h5>
+    <div class="progress mb-5">
+      <div class="progress-bar" role="progressbar" style="width: 15%"
+        aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-success" role="progressbar" style="width: 30%"
+        aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </section>
   <section class="productsTable">
-    <button type="button" class="btn btn-primary add-btn mb-3"
-      @click="openModal(true)">Add Product</button>
+    <div class="d-flex justify-content-between align-items-center">
+      <h5>Products list</h5>
+      <button type="button" class="btn btn-primary add-btn mb-3"
+        @click="openModal(true)">
+        <span class="material-icons">add</span>
+      </button>
+    </div>
     <div class="productsList">
       <table class="table">
         <thead>
@@ -81,6 +97,29 @@
         </tbody>
       </table>
     </div>
+    <!-- <ul class="productsList2">
+      <li class="d-flex justify-content-between align-items-center"
+        v-for="product in products" :key="product.id">
+        <div class="productsList2-title">{{ product.title }}</div>
+        <div class="productsList2-category">{{ product.category }}</div>
+        <div class="productsList2-origin-price">{{ product.origin_price }}</div>
+        <div class="productsList2-price">{{ product.price }}</div>
+        <div class="productsList2-enabled">
+          <span class="text-success" v-if="product.is_enabled">Enable</span>
+          <span class="text-muted" v-else>Not Enabled</span>
+        </div>
+        <div class="productsList2-btns">
+          <button class="btn me-3">
+            <span class="material-icons table-btns-edit"
+              @click="openModal(false, product)">edit</span>
+          </button>
+          <button class="btn">
+            <span class="material-icons table-btns-delete"
+              @click="openDelModal(product)">delete</span>
+          </button>
+        </div>
+      </li>
+    </ul> -->
     <Pagination @emit-pages="getProducts"
       :pages="pagination"></Pagination>
   </section>
@@ -211,7 +250,7 @@ export default {
   position: relative;
   width: 320px;
   input {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     padding-left: 50px;
     border: none;
     border-radius: 00.75rem;
@@ -231,12 +270,15 @@ export default {
 .product-quantity {
   display: flex;
   align-items: center;
+  width: calc(100% / 3);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 .5rem 1rem rgba(#000, .15);
   .material-icons {
     font-size: 2.75em;
-    background: #bcbcbc;
-    padding: 1.25rem;
-    border-radius: 0.75rem;
     margin-right: 1rem;
+    // color: $primary;
+    // color: $third;
   }
   p {
     margin-bottom: 0;
@@ -245,15 +287,24 @@ export default {
   h3 {
     margin-bottom: 0;
     font-size: 2.5rem;
+    // color: $third;
+  }
+}
+.add-btn {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  span {
+    display: block;
   }
 }
 .productsList {
-  height: 300px;
-  overflow-y: scroll;
+  // height: 300px;
+  // overflow-y: scroll;
   margin-bottom: 2rem;
   .table > :not(caption) > * > * {
     vertical-align: middle;
-    padding: 0.75rem;
+    text-align: center;
+    // padding: 0 0.75rem;
   }
   .table-title {
     font-weight: bold;
@@ -283,5 +334,40 @@ export default {
       }
     }
   }
+}
+.productsList2 {
+  margin: 0;
+  margin-bottom: 2rem;
+  padding: 0;
+  // height: 250px;
+  // overflow-y: scroll;
+  li {
+    // padding: 1rem 0;
+    // margin-bottom: 1rem;
+    // border-radius: 0.75rem;
+    border-bottom: 1px solid $background;
+    // box-shadow: 0 .5rem 1rem rgba(#000, .15);
+  }
+  div {
+    padding: 0.5rem 0;
+    width: calc((100% - 20%) / 5);
+    text-align: center;
+  }
+  .productsList2-title {
+    width: 20%;
+    text-align: left;
+  }
+  // .productsList2-category {
+  //   width: 10%;
+  // }
+  // .productsList2-origin-price {
+  //   width: 10%;
+  // }
+  // .productsList2-price {
+  //   width: 10%;
+  // }
+  // .productsList2-enabled {
+  //   width: 10%;
+  // }
 }
 </style>
