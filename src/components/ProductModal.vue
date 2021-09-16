@@ -103,7 +103,7 @@
                   id="is_enabled"
                   v-model="tempProduct.is_enabled">
                 <label class="form-check-label" for="is_enabled">
-                  是否啟用
+                  Is enabled ?
                 </label>
               </div>
             </div>

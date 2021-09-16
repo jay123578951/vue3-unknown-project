@@ -97,51 +97,28 @@
         </tbody>
       </table>
     </div>
-    <!-- <ul class="productsList2">
-      <li class="d-flex justify-content-between align-items-center"
-        v-for="product in products" :key="product.id">
-        <div class="productsList2-title">{{ product.title }}</div>
-        <div class="productsList2-category">{{ product.category }}</div>
-        <div class="productsList2-origin-price">{{ product.origin_price }}</div>
-        <div class="productsList2-price">{{ product.price }}</div>
-        <div class="productsList2-enabled">
-          <span class="text-success" v-if="product.is_enabled">Enable</span>
-          <span class="text-muted" v-else>Not Enabled</span>
-        </div>
-        <div class="productsList2-btns">
-          <button class="btn me-3">
-            <span class="material-icons table-btns-edit"
-              @click="openModal(false, product)">edit</span>
-          </button>
-          <button class="btn">
-            <span class="material-icons table-btns-delete"
-              @click="openDelModal(product)">delete</span>
-          </button>
-        </div>
-      </li>
-    </ul> -->
     <Pagination @emit-pages="getProducts"
       :pages="pagination"></Pagination>
   </section>
   <ProductModal ref="productModal"
     @update-product="updateProduct"
     :product-info="tempProduct"></ProductModal>
-  <DelModal ref="delModal"
+  <DelProductModal ref="delProductModal"
     @del-product="deleteProduct"
-    :del-product-info="tempProduct"></DelModal>
+    :del-product-info="tempProduct"></DelProductModal>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import ProductModal from '../../components/ProductModal.vue';
-import DelModal from '../../components/DelModal.vue';
+import DelProductModal from '../../components/DelProductModal.vue';
 import Pagination from '../../components/Pagination.vue';
 
 export default {
   name: 'Products',
   components: {
     ProductModal,
-    DelModal,
+    DelProductModal,
     Pagination,
   },
   data() {
@@ -167,10 +144,10 @@ export default {
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
-          this.isLoading = false;
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
+            this.isLoading = false;
           }
         });
     },
@@ -216,14 +193,14 @@ export default {
     },
     openDelModal(product) {
       this.tempProduct = { ...product };
-      this.$refs.delModal.showModal();
+      this.$refs.delProductModal.showModal();
     },
-    deleteProduct(product) {
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${product.id}`;
+    deleteProduct(id) {
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`;
       this.$http.delete(api)
         .then((res) => {
           if (res.data.success) {
-            this.$refs.delModal.hideModal();
+            this.$refs.delProductModal.hideModal();
             this.getProducts();
             this.$store.commit('setMsg', {
               icon: 'success',
@@ -277,8 +254,6 @@ export default {
   .material-icons {
     font-size: 2.75em;
     margin-right: 1rem;
-    // color: $primary;
-    // color: $third;
   }
   p {
     margin-bottom: 0;
@@ -287,7 +262,6 @@ export default {
   h3 {
     margin-bottom: 0;
     font-size: 2.5rem;
-    // color: $third;
   }
 }
 .add-btn {
@@ -298,13 +272,10 @@ export default {
   }
 }
 .productsList {
-  // height: 300px;
-  // overflow-y: scroll;
   margin-bottom: 2rem;
   .table > :not(caption) > * > * {
     vertical-align: middle;
     text-align: center;
-    // padding: 0 0.75rem;
   }
   .table-title {
     font-weight: bold;
@@ -339,14 +310,8 @@ export default {
   margin: 0;
   margin-bottom: 2rem;
   padding: 0;
-  // height: 250px;
-  // overflow-y: scroll;
   li {
-    // padding: 1rem 0;
-    // margin-bottom: 1rem;
-    // border-radius: 0.75rem;
     border-bottom: 1px solid $background;
-    // box-shadow: 0 .5rem 1rem rgba(#000, .15);
   }
   div {
     padding: 0.5rem 0;
@@ -357,17 +322,5 @@ export default {
     width: 20%;
     text-align: left;
   }
-  // .productsList2-category {
-  //   width: 10%;
-  // }
-  // .productsList2-origin-price {
-  //   width: 10%;
-  // }
-  // .productsList2-price {
-  //   width: 10%;
-  // }
-  // .productsList2-enabled {
-  //   width: 10%;
-  // }
 }
 </style>

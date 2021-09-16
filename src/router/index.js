@@ -20,6 +20,10 @@ const routes = [
         path: 'products',
         component: () => import('../views/backstage/Products.vue'),
       },
+      {
+        path: 'coupon',
+        component: () => import('../views/backstage/Coupon.vue'),
+      },
     ],
   },
 ];

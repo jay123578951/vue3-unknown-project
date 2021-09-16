@@ -20,7 +20,7 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/">
+            <router-link class="nav-link" to="/admin/coupon">
               <span class="material-icons">sell</span>
               <span class="nav-link-text">Coupons</span>
             </router-link>
@@ -63,7 +63,6 @@ export default {
       const api = `${process.env.VUE_APP_API}/logout`;
       this.$http.post(api)
         .then((res) => {
-          console.log(res);
           alert(res.data.message);
           this.$router.push('/');
         });
