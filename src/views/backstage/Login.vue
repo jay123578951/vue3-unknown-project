@@ -106,7 +106,7 @@ export default {
   .login-type {
     .login-type-divide {
       font-size: 14px;
-      color: $third;
+      color: $body-color;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -116,7 +116,7 @@ export default {
       .divide-line {
         width: 100px;
         height: 1px;
-        background-color: $third;
+        background-color: $body-color;
       }
     }
     .login-type-btn {
@@ -124,12 +124,12 @@ export default {
       justify-content: center;
       align-items: center;
       padding: 1rem;
-      background: $secondary;
+      background: white;
       border: none;
       border-radius: 0.75rem;
       transition: $transition-base;
       &:hover {
-        background: $secondary-hover;
+        background: $third;
       }
       span {
         display: block;
