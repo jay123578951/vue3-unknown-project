@@ -5,6 +5,24 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('../views/frontdesk/Home.vue'),
+    children: [
+      {
+        path: 'index',
+        component: () => import('../views/frontdesk/Index.vue'),
+      },
+      {
+        path: 'watches',
+        component: () => import('../views/frontdesk/Watches.vue'),
+      },
+      {
+        path: 'watch/:productId',
+        component: () => import('../views/frontdesk/Watch.vue'),
+      },
+      {
+        path: 'cart',
+        component: () => import('../views/frontdesk/Cart.vue'),
+      },
+    ],
   },
   {
     path: '/login',
